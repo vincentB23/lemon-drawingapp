@@ -1,0 +1,10 @@
+body {
+    background-color: white;
+    margin: 0;
+}
+
+.wrapper {
+    display: grid;
+    height: 100vh;
+    margin: 0;
+}
