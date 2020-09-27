@@ -37,7 +37,6 @@ function onCellMouseUp(id) {
 }
 
 function onCellMouseOver(id) {
-    console.log(id);
     if (activeDraw) {
         let element = document.getElementById(id);
         draw(element);
