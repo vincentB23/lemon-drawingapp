@@ -1,5 +1,5 @@
-let container = document.getElementById("container");
-let colorpicker = document.getElementById("colorpicker");
+var container = document.getElementById("container");
+var colorpicker = document.getElementById("colorpicker");
 
 document.addEventListener('contextmenu', event => event.preventDefault());
 colorpicker.addEventListener("mouseleave", hideColorPicker);
@@ -13,8 +13,7 @@ var currentColor = "red";
 var cellWidthWithBorder = (container.offsetWidth/100);
 var cellWidthWithoutBorder = cellWidthWithBorder - 2;
 var numberOfRows = Math.floor(container.offsetHeight/cellWidthWithBorder);
-
-let activeDraw = false;
+var activeDraw = false;
 
 for(i=1; i<=100; i++) {
     for(j=1; j<=numberOfRows; j++) {
@@ -28,7 +27,7 @@ for(i=1; i<=100; i++) {
         element.addEventListener("mouseover", function(){ onCellMouseOver(id);});
         element.addEventListener("mouseup", function(){ onCellMouseUp(id);});
         element.id = id;
-        element.style.cssText = `width:${cellWidthWithoutBorder}px;height:${cellWidthWithoutBorder}px;background-color:white;border-style:solid;border-color:lightgrey;border-width:1px;grid-column:${i};grid-row:${j}`
+        element.style.cssText = `-webkit-user-drag:none;-webkit-user-select:none;-webkit-app-region:no-dragwidth:${cellWidthWithoutBorder}px;height:${cellWidthWithoutBorder}px;background-color:white;border-style:solid;border-color:lightgrey;border-width:1px;grid-column:${i};grid-row:${j}`
         container.appendChild(element);
     }
 }
@@ -38,6 +37,7 @@ function onCellMouseUp(id) {
 }
 
 function onCellMouseOver(id) {
+    console.log(id);
     if (activeDraw) {
         let element = document.getElementById(id);
         draw(element);
@@ -46,18 +46,16 @@ function onCellMouseOver(id) {
 
 function onCellClickLeftMouse(id) {
     let element = document.getElementById(id);
-    if (element.style.backgroundColor == currentColor) {
-        element.style.backgroundColor = "white";
-    } else {
+    if (element.style.backgroundColor == "white") {
         activeDraw = true;
         draw(element);
+    } else {
+        element.style.backgroundColor = "white";
     }
 }
 
 function draw(element) {
-    if (element.style.backgroundColor != "white" && activeDraw != true) {
-        element.style.backgroundColor = "white";
-    } else {
+    if (element.style.backgroundColor == "white") {
         element.style.backgroundColor = currentColor;
     }
 }
@@ -81,5 +79,6 @@ function showColorPicker(event) {
     colorpicker.style.top = `${event.clientY}px`;
     colorpicker.offsetHeight;
     colorpicker.classList.remove('notransition');
+
     colorpicker.className += " colorpickerloaded";
 }
