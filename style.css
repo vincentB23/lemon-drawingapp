@@ -8,3 +8,63 @@ body {
     height: 100vh;
     margin: 0;
 }
+
+.colorpicker {
+    opacity: 0;
+    position: absolute;
+    display: flex;
+    top: 0;
+    left: 0;
+    min-width: 170px;
+    width: 170px;
+    height: 34px;
+    z-index: -10;
+    border: solid 2px grey;
+    background-color: white;
+    transition: 0.5s;
+    transition-delay: 0.5s;
+}
+
+.colorpickerloaded {
+    opacity: 1;
+    z-index: 10;
+}
+
+.colorsquare {
+    border: solid 1px lightgray;
+    margin: 4px;
+    width: 24px;
+    height: 24px;
+    background-color: red;
+}
+
+.colorred {
+    background-color: red;
+}
+
+.colorgreen {
+    background-color: green;
+}
+
+.colorblue {
+    background-color: blue;
+}
+
+.coloryellow {
+    background-color: yellow;
+}
+
+.colororange {
+    background-color: orange;
+}
+
+.selected {
+    border: solid 1px black;
+}
+
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+  }

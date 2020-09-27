@@ -1,28 +1,85 @@
-var container = document.getElementById("container");
+let container = document.getElementById("container");
+let colorpicker = document.getElementById("colorpicker");
+
+document.addEventListener('contextmenu', event => event.preventDefault());
+colorpicker.addEventListener("mouseleave", hideColorPicker);
+container.addEventListener("mousedown", event => {
+    if (event.button == 2) {
+        showColorPicker(event);
+    }
+})
+
+var currentColor = "red";
 var cellWidthWithBorder = (container.offsetWidth/100);
 var cellWidthWithoutBorder = cellWidthWithBorder - 2;
-console.log(cellWidthWithBorder);
-console.log(cellWidthWithoutBorder);
-
 var numberOfRows = Math.floor(container.offsetHeight/cellWidthWithBorder);
-console.log(numberOfRows)
+
+let activeDraw = false;
 
 for(i=1; i<=100; i++) {
     for(j=1; j<=numberOfRows; j++) {
         var element = document.createElement("DIV");
         let id = (i * 100) + j - 100;
-        element.addEventListener("click", function(){ onCellClickLeftMouse(id);});
+        element.addEventListener("mousedown", event => {
+            if(event.button == 0) {
+                onCellClickLeftMouse(id);
+            }
+        });
+        element.addEventListener("mouseover", function(){ onCellMouseOver(id);});
+        element.addEventListener("mouseup", function(){ onCellMouseUp(id);});
         element.id = id;
-        element.style.cssText = `width:${cellWidthWithoutBorder}px;height:${cellWidthWithoutBorder}px;border-style:solid;border-color:lightgrey;border-width:1px;grid-column:${i};grid-row:${j}`
+        element.style.cssText = `width:${cellWidthWithoutBorder}px;height:${cellWidthWithoutBorder}px;background-color:white;border-style:solid;border-color:lightgrey;border-width:1px;grid-column:${i};grid-row:${j}`
         container.appendChild(element);
+    }
+}
+
+function onCellMouseUp(id) {
+    activeDraw = false;
+}
+
+function onCellMouseOver(id) {
+    if (activeDraw) {
+        let element = document.getElementById(id);
+        draw(element);
     }
 }
 
 function onCellClickLeftMouse(id) {
     let element = document.getElementById(id);
-    if (element.style.backgroundColor == "red") {
+    if (element.style.backgroundColor == currentColor) {
         element.style.backgroundColor = "white";
     } else {
-        element.style.backgroundColor = "red";
+        activeDraw = true;
+        draw(element);
     }
+}
+
+function draw(element) {
+    if (element.style.backgroundColor != "white" && activeDraw != true) {
+        element.style.backgroundColor = "white";
+    } else {
+        element.style.backgroundColor = currentColor;
+    }
+}
+
+function changeActiveColor(element) {
+    oldSelected = document.getElementById(currentColor);
+    oldSelected.classList.remove("selected");
+    let id = element.id;
+    currentColor = id;
+    element.className += " selected";
+    hideColorPicker();
+}
+
+function hideColorPicker() {
+    colorpicker.classList.remove("colorpickerloaded");
+}
+
+function showColorPicker(event) {
+    colorpicker.classList.add('notransition');
+    colorpicker.style.left = `${event.clientX}px`;
+    colorpicker.style.top = `${event.clientY}px`;
+    colorpicker.offsetHeight;
+    colorpicker.classList.remove('notransition');
+    colorpicker.className += " colorpickerloaded";
 }
